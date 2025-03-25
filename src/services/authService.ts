@@ -51,3 +51,35 @@ export const requestPasswordService = async (email: string) => {
     }
 }
 
+export const validateResetTokenService = async (token: string) => {
+    try {
+        const res = await fetch(`${API_URL}/auth/verify-token/${token}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+        });
+
+        const result = await res.json();
+        if (!result.success) throw new Error(result.message || "Token inválido");
+
+        return result;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const resetPasswordService = async (token: string, newPassword: string) => {
+    try {
+        const res = await fetch(`${API_URL}/auth/reset-password`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token, newPassword }),
+        });
+
+        const result = await res.json();
+        if (!result.success) throw new Error(result.message || "Error al cambiar contraseña");
+
+        return result;
+    } catch (error) {
+        throw error;
+    }
+};
