@@ -5,6 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import toast from "react-hot-toast";
 import { requestPasswordService } from "../../../services/authService";
+import router from "next/router";
 
 // Validación
 const schema = yup.object().shape({
@@ -23,8 +24,11 @@ export default function RecoveryPassword() {
     const onSubmit = async (data: any) => {
         try {
             const res = await requestPasswordService(data.email);
-            console.log('res', res);
-            toast.success(res.message || "Correo de recuperación enviado");
+            if (res.success) {
+                router.push("/login");
+                toast.success(res.message || "Correo de recuperación enviado");
+                return;
+            }
         } catch (error: any) {
             toast.error(error.message || "Algo salió mal");
         }

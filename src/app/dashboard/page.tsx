@@ -1,21 +1,21 @@
 "use client";
 import { useAuth } from "../../hooks/useAuth";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
+// import { useEffect } from "react";
+// import { useRouter } from "next/navigation";
+import { useAuthGuard } from "@/hooks/useAuthGuard";
 
 export default function Dashboard() {
-    const { user, isAuthenticated, logout } = useAuth();
-    const router = useRouter();
 
-    useEffect(() => {
-        if (!isAuthenticated) {
-            toast.error("Acceso denegado. Inicia sesión primero.");
-            router.push("/login");
-        }
-    }, [isAuthenticated, router]);
+    const { user, logout } = useAuth();
+    const { isChecking } = useAuthGuard();
 
-    if (!isAuthenticated) return null;
+    if (isChecking) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <p className="text-gray-500">Verificando acceso...</p>
+            </div>
+        );
+    }
 
     return (
         <main className="flex h-screen items-center justify-center flex-col">
@@ -37,4 +37,5 @@ export default function Dashboard() {
             </button>
         </main>
     );
+
 }
