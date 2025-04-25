@@ -7,7 +7,7 @@
 export default function HomePage() {
   return (
  <div>
-  hola
+  Pruebas regalo X TI HOME
  </div>
   );
 }
