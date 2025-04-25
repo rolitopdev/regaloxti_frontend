@@ -11,9 +11,9 @@ export default function HomePage() {
   return (
     <div className="bg-gradient-to-b from-zinc-900 to-black min-h-screen text-white px-6 py-12 overflow-x-hidden">
       {/* Hero Section */}
-      <motion.div 
-        initial={{ opacity: 0, y: -50 }} 
-        animate={{ opacity: 1, y: 0 }} 
+      <motion.div
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
         className="text-center"
       >
@@ -23,7 +23,7 @@ export default function HomePage() {
         <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
           Arma regalos únicos y personalizados para sorprender a quienes más quieres.
         </p>
-        <motion.button 
+        <motion.button
           whileHover={{ scale: 1.1 }}
           className="bg-red-500 text-white px-10 py-4 mt-8 rounded-full text-xl shadow-xl hover:bg-red-600 transition"
         >
@@ -32,7 +32,7 @@ export default function HomePage() {
       </motion.div>
 
       {/* Gift Animation - Centered and Bigger */}
-      <motion.div 
+      <motion.div
         initial={{ scale: 0, rotate: -15 }}
         animate={{ scale: 1.15, rotate: 0 }}
         transition={{ delay: 0.8, duration: 1 }}
@@ -42,10 +42,10 @@ export default function HomePage() {
       </motion.div>
 
       {/* How it works */}
-      <motion.div 
-        initial={{ opacity: 0, y: 50 }} 
-        whileInView={{ opacity: 1, y: 0 }} 
-        viewport={{ once: true }} 
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
         transition={{ delay: 0.2, duration: 1 }}
         className="mt-24 max-w-4xl mx-auto text-center"
       >
@@ -67,10 +67,10 @@ export default function HomePage() {
       </motion.div>
 
       {/* Testimonials Section */}
-      <motion.div 
-        initial={{ opacity: 0, y: 50 }} 
-        whileInView={{ opacity: 1, y: 0 }} 
-        viewport={{ once: true }} 
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
         transition={{ delay: 0.3, duration: 1 }}
         className="mt-32 max-w-5xl mx-auto text-center"
       >
@@ -92,9 +92,9 @@ export default function HomePage() {
       </motion.div>
 
       {/* Social Section */}
-      <motion.div 
-        initial={{ opacity: 0 }} 
-        animate={{ opacity: 1 }} 
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 1 }}
         className="flex justify-center space-x-6 mt-24 text-gray-400"
       >

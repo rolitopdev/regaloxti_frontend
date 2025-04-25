@@ -8,7 +8,6 @@ import { loginService } from "../../../services/authService";
 import { useAuth } from "../../../hooks/useAuth";
 import toast from "react-hot-toast";
 
-// 🎯 1. Esquema de validación con Yup
 const schema = yup.object().shape({
     email: yup.string().email("Correo inválido").required("El correo es obligatorio"),
     password: yup.string().min(6, "Mínimo 6 caracteres").required("La contraseña es obligatoria"),
@@ -18,7 +17,6 @@ export default function Login() {
     const { login } = useAuth();
     const router = useRouter();
 
-    // 🎯 2. React Hook Form con Yup
     const {
         register,
         handleSubmit,
@@ -38,34 +36,68 @@ export default function Login() {
     };
 
     return (
-        <main className="flex h-screen items-center justify-center">
-            <form onSubmit={handleSubmit(onSubmit)} className="bg-white p-6 rounded-lg shadow-md w-96">
-                <h2 className="text-xl font-bold mb-4">Iniciar Sesión</h2>
+        <div className="min-h-screen flex flex-col md:flex-row"
+            style={{ background: "linear-gradient(to bottom, #f472b6, #f9a8d4, #ffdab4)" }}>
+            {/* Left Side - Form */}
+            <div className="flex flex-1 items-center justify-center bg-white m-3.5 p-8 md:rounded-3xl shadow-lg">
+                <div className="w-full max-w-sm">
+                    <h2 className="text-3xl font-bold mb-2 text-[#142d71]">Iniciar Sesión</h2>
+                    <p className="text-sm text-gray-600 mb-6">
+                        Usuario nuevo?{' '}
+                        <a href="#" className="text-[#142d71] hover:underline">Crea una cuenta</a>
+                    </p>
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                        <div>
+                            <label className="block text-sm text-[#142d71] mb-1">Correo</label>
+                            <input
+                                type="email"
+                                placeholder="eureka22@gmail.com"
+                                {...register("email")}
+                                className="w-full border-b border-gray-300 focus:border-pink-500 outline-none py-2 bg-transparent"
+                            />
+                            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
+                        </div>
+                        <div>
+                            <label className="block text-sm text-[#142d71] mb-1">Contraseña</label>
+                            <div className="relative">
+                                <input
+                                    type="password"
+                                    placeholder="••••••••"
+                                    {...register("password")}
+                                    className="w-full border-b border-gray-300 focus:border-pink-500 outline-none py-2 pr-10 bg-transparent"
+                                />
+                            </div>
+                            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
+                        </div>
+                        <div className="text-right">
+                            <a href="#" className="text-sm text-[#142d71] hover:underline">
+                                Olvidaste la contraseña?
+                            </a>
+                        </div>
+                        <button
+                            type="submit"
+                            disabled={isSubmitting}
+                            className={`w-full bg-gradient-to-b bg-[#142d71] text-white py-2 rounded-md transition 
+                                        ${isSubmitting ? "opacity-50 cursor-not-allowed" : ""}`}
+                        >
+                            {isSubmitting ? "Entrando..." : "Login"}
+                        </button>
+                    </form>
+                    <p className="text-xs text-gray-400 mt-6">
+                        Protected by reCAPTCHA and subject to the <a href="#" className="text-[#142d71] hover:underline">RegaloXTi Privacy Policy</a> and <a href="#" className="text-pink-500 hover:underline">Terms of Service</a>.
+                    </p>
+                </div>
+            </div>
 
-                <input
-                    type="email"
-                    placeholder="Correo"
-                    {...register("email")}
-                    className="w-full p-2 mb-1 border"
-                />
-                {errors.email && <p className="text-red-500 text-sm mb-2">{errors.email.message}</p>}
-
-                <input
-                    type="password"
-                    placeholder="Contraseña"
-                    {...register("password")}
-                    className="w-full p-2 mb-1 border"
-                />
-                {errors.password && <p className="text-red-500 text-sm mb-4">{errors.password.message}</p>}
-
-                <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className={`w-full bg-blue-500 text-white p-2 rounded ${isSubmitting ? "opacity-50" : ""}`}
-                >
-                    {isSubmitting ? "Entrando..." : "Entrar"}
-                </button>
-            </form>
-        </main>
+            {/* Right Side - Info */}
+            <div className="hidden md:flex flex-1 flex-col items-center justify-center text-white p-10">
+                <h1 className="text-3xl font-bold text-center mb-4 text-[#142d71]">
+                    Inicia sesión y descubre un mundo de sorpresas
+                </h1>
+                <p className="text-center max-w-xs text-[#142d71]">
+                    Con RegaloXTi, gestionar y enviar regalos nunca fue tan fácil y especial.
+                </p>
+            </div>
+        </div>
     );
 }
