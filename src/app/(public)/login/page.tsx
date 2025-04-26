@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { loginService } from "../../../services/authService";
 import { useAuth } from "../../../hooks/useAuth";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 const schema = yup.object().shape({
     email: yup.string().email("Correo inválido").required("El correo es obligatorio"),
@@ -70,9 +71,7 @@ export default function Login() {
                             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
                         </div>
                         <div className="text-right">
-                            <a href="#" className="text-sm text-[#142d71] hover:underline">
-                                Olvidaste la contraseña?
-                            </a>
+                            <Link href="/recovery-password" className="text-sm text-[#142d71] hover:underline">Olvidaste la contraseña?</Link>
                         </div>
                         <button
                             type="submit"
