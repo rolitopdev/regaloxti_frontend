@@ -11,7 +11,13 @@ export default function GiftBuilderPage() {
     const [giftData, setGiftData] = useState({
         products: [],
         message: '',
-        recipient: null
+        recipient: {
+            date: '',
+            recipientName: '',
+            phone: '',
+            address: '',
+            latlng: null
+        }
     });
 
     const nextStep = () => setActiveStep(prev => prev + 1);

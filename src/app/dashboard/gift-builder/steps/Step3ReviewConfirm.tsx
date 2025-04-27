@@ -1,33 +1,40 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 export default function Step3ReviewConfirm({ giftData, prevStep }: any) {
+    
+    const totalPrice = giftData.products.reduce((acc: number, item: any) => acc + item.price * item.quantity, 0);
 
     const handleConfirm = () => {
-        // Aquí iría la lógica para enviar la orden al backend (fetch/axios)
-        console.log("Datos del pedido:", giftData);
+        console.log("📦 Enviando pedido:", giftData);
         alert("¡Pedido confirmado! 🎉");
     };
 
     return (
-        <div>
-            <h2 className="text-2xl font-semibold mb-4">✅ Revisa y Confirma tu Pedido</h2>
+        <div className="max-w-2xl mx-auto p-6 bg-white rounded shadow">
+            <h2 className="text-2xl font-semibold mb-6 text-center">✅ Revisa y Confirma tu Pedido</h2>
 
             <div className="mb-6">
-                <h3 className="font-bold">Productos Seleccionados:</h3>
-                {giftData.products.length > 0 ? (
-                    <ul className="list-disc ml-5">
-                        {giftData.products.map((p: any, idx: any) => (
-                            <li key={idx}>{p.name} x {p.quantity}</li>
-                        ))}
-                    </ul>
-                ) : (
-                    <p className="text-red-500">No has seleccionado productos.</p>
-                )}
+                <h3 className="font-bold mb-2">🛒 Productos:</h3>
+                {giftData.products.map((p: any, idx: number) => (
+                    <p key={idx}>{p.name} x {p.quantity} <span className="text-sm text-gray-500">(${p.price} c/u)</span></p>
+                ))}
             </div>
 
             <div className="mb-6">
-                <h3 className="font-bold">Mensaje Personalizado:</h3>
-                <p className="italic text-gray-700">{giftData.message || "Sin mensaje."}</p>
+                <h3 className="font-bold mb-2">📍 Destinatario:</h3>
+                <p><strong>Nombre:</strong> {giftData.recipient.recipientName}</p>
+                <p><strong>Teléfono:</strong> {giftData.recipient.phone}</p>
+                <p><strong>Fecha de Envío:</strong> {giftData.recipient.date}</p>
+                <p><strong>Dirección:</strong> {giftData.recipient.address}</p>
+            </div>
+
+            <div className="mb-6">
+                <h3 className="font-bold mb-2">💌 Mensaje:</h3>
+                <p className="italic">{giftData.message}</p>
+            </div>
+
+            <div className="text-right mb-6">
+                <h3 className="text-xl font-semibold">💲 Total: ${totalPrice}</h3>
             </div>
 
             <div className="flex justify-between">

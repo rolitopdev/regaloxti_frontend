@@ -43,7 +43,7 @@ export default function FloatingIAButton({ handleSuggestion }: any) {
                             disabled={loading}
                             className="bg-indigo-600 text-white px-4 py-2 rounded w-full"
                         >
-                            {loading ? "Generando..." : "Sugerir Regalo"}
+                            {loading ? "RegalinaAI está pensando." : "Sugerir Regalo"}
                         </button>
                     </Dialog.Panel>
                 </div>
