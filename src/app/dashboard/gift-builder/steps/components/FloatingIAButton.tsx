@@ -20,9 +20,9 @@ export default function FloatingIAButton({ handleSuggestion }: any) {
     return (
         <>
             <button
-                className="fixed bottom-6 right-6 bg-indigo-600 text-white p-4 rounded-full shadow-lg hover:bg-indigo-700 text-2xl flex items-center justify-center"
+                className="fixed bottom-6 right-6 bg-indigo-600 text-white p-4 rounded-full shadow-lg hover:bg-indigo-700 text-2xl flex items-center justify-center cursor-pointer"
                 onClick={() => setIsOpen(true)}
-                title="Sugerencia con IA"
+                title="Sugerencia con RegalinaIA"
             >
                 {loading ? <span className="animate-spin border-2 border-white border-t-transparent rounded-full w-6 h-6"></span> : '🤖'}
             </button>

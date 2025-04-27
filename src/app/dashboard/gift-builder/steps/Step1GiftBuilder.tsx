@@ -2,15 +2,19 @@
 "use client";
 import { useEffect, useState } from "react";
 import { DndContext, closestCenter, DragOverlay } from "@dnd-kit/core";
-import toast from "react-hot-toast";
-import GiftBox from "./components/GiftBox";
-import ProductList from "./components/ProductList";  // Nuevo componente con Infinite Scroll
-import { getAvailableProducts } from "@/services/productService";
 import { motion } from "framer-motion";
+import toast from "react-hot-toast";
+import { getAvailableProducts } from "@/services/productService";
+import { suggestGiftService } from "@/services/aiService";
+import GiftBox from "./components/GiftBox";
+import ProductList from "./components/ProductList";
+import FloatingIAButton from "./components/FloatingIAButton";
 
 export default function Step1GiftBuilder({ giftData, setGiftData, nextStep }: any) {
+
     const [products, setProducts] = useState<any[]>([]);
     const [activeProduct, setActiveProduct] = useState<any | null>(null);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         getAvailableProducts()
@@ -90,6 +94,20 @@ export default function Step1GiftBuilder({ giftData, setGiftData, nextStep }: an
 
     const totalPrice = giftData.products.reduce((acc: number, item: any) => acc + item.price * item.quantity, 0);
 
+    const handleSuggestion = async (prompt: string) => {
+        try {
+            setLoading(true);
+            const suggestions = await suggestGiftService(prompt);
+            const enriched = suggestions.data.map((s: any) => ({ ...s, quantity: s.quantity || 1 }));
+            toast.success(`RegalinaIA: ${suggestions.message}`, { duration: 10000, icon: "🤖" });
+            setGiftData({ ...giftData, products: enriched });
+        } catch (err: any) {
+            toast.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <DndContext collisionDetection={closestCenter} onDragStart={onDragStart} onDragEnd={onDragEnd}>
             <div className="flex flex-col lg:flex-row items-start justify-center gap-10 p-6">
@@ -117,6 +135,9 @@ export default function Step1GiftBuilder({ giftData, setGiftData, nextStep }: an
                 )}
             </DragOverlay>
 
+            {/* Botón flotante IA */}
+            <FloatingIAButton handleSuggestion={handleSuggestion} loading={loading} />
+
             {/* Botón para avanzar */}
             <div className="text-center mt-8">
                 <button
@@ -127,6 +148,7 @@ export default function Step1GiftBuilder({ giftData, setGiftData, nextStep }: an
                     Siguiente: Personalizar Mensaje
                 </button>
             </div>
+
         </DndContext>
     );
 }
