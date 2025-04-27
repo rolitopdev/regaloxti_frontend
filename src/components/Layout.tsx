@@ -1,55 +1,89 @@
 "use client";
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { FiHome, FiGift, FiUser, FiLogOut, FiBell, FiMenu, FiX } from "react-icons/fi";
 import Link from "next/link";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
 
+    const { logout } = useAuth();
+    const pathname = usePathname();
+
+    const [isMounted, setIsMounted] = useState(false);
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
-    return (
-        <div className="flex h-screen bg-gray-50">
-            {/* Sidebar */}
-            <div className={`fixed md:static z-50 top-0 left-0 h-full bg-white shadow-lg transition-transform 
-                      ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 w-64`}>
-                <div className="p-6">
-                    <h2 className="text-2xl font-bold text-[#142d71] mb-8">RegaloXTi 🎁</h2>
-                    <nav className="flex flex-col space-y-4 text-gray-700">
-                        <Link href="/dashboard" className="hover:text-[#142d71]">🏠 Inicio</Link>
-                        <Link href="/dashboard/gift-builder" className="hover:text-[#142d71]">🎁 Armar Regalo</Link>
-                        { /*cerrar sesions */}
+    useEffect(() => setIsMounted(true), []);
+    if (!isMounted) return null;
 
+    const menuItems = [
+        { href: "/dashboard", icon: <FiHome />, key: "Inicio" },
+        { href: "/dashboard/gift-builder", icon: <FiGift />, key: "Armar Regalo" },
+        // { href: "/dashboard/profile", icon: <FiUser />, key: "Perfil" }
+    ];
+
+    return (
+        <div className="flex h-screen bg-[#f9fafb] text-gray-700">
+            {/* Sidebar - Visible en md+, Drawer en móvil */}
+            <aside className={`fixed md:static z-40 top-0 left-0 h-full w-48 bg-white 
+                              transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 transition-transform duration-300`}>
+                <div className="flex flex-col py-6 px-4 space-y-6">
+                    <div className="flex justify-between items-center">
+                        <div className="text-2xl text-[#6366f1]">
+                            <img src="https://i.imgur.com/llHWoWb.png" alt="" />
+                        </div>
+                        <button className="md:hidden" onClick={() => setSidebarOpen(false)}>
+                            <FiX />
+                        </button>
+                    </div>
+                    <nav className="flex flex-col space-y-4">
+                        {menuItems.map((item) => (
+                            <Link
+                                key={item.key}
+                                href={item.href}
+                                className={`flex items-center space-x-3 p-2 rounded-lg transition-colors
+                                    ${pathname === item.href
+                                        ? "bg-[#eef2ff] text-[#6366f1]"
+                                        : "text-gray-500 hover:bg-gray-100"}
+                                `}
+                                onClick={() => setSidebarOpen(false)}
+                            >
+                                <span>{item.icon}</span>
+                                <span>{item.key}</span>
+                            </Link>
+                        ))}
+                        <button
+                            onClick={() => { logout(); setSidebarOpen(false); }}
+                            className="flex items-center space-x-3 p-2 rounded-lg text-gray-500 hover:text-red-500 hover:bg-red-50 transition-colors cursor-pointer"
+                        >
+                            <FiLogOut />
+                            <span>Cerrar Sesión</span>
+                        </button>
                     </nav>
                 </div>
-            </div>
+            </aside>
 
             {/* Main Section */}
             <div className="flex-1 flex flex-col">
                 {/* Header */}
-                <header className="flex items-center justify-between bg-white shadow px-6 py-4">
+                <header className="flex justify-between items-center bg-white px-6 py-3">
                     <div className="flex items-center space-x-4">
-                        <button
-                            className="md:hidden text-[#142d71] text-2xl"
-                            onClick={() => setSidebarOpen(!sidebarOpen)}
-                        >
-                            ☰
+                        <button className="md:hidden" onClick={() => setSidebarOpen(true)}>
+                            <FiMenu />
                         </button>
-                        <h1 className="text-xl font-semibold text-[#142d71] hidden md:block">Dashboard</h1>
                     </div>
                     <div className="flex items-center space-x-4">
-                        {/* Aquí puedes meter tus íconos */}
-                        {/* <button className="bg-gray-100 p-2 rounded-full">🔔</button>
-                        <button className="bg-gray-100 p-2 rounded-full">💬</button> */}
-                        {/* <img src="https://" alt="Perfil" className="w-10 h-10 rounded-full border" /> */}
+                        <FiBell />
+                        <FiUser className="w-9 h-9 rounded-full border" />
                     </div>
                 </header>
 
                 {/* Content */}
-                <main className="p-6 overflow-auto">
+                <main className="flex-1 p-4 overflow-auto">
                     {children}
                 </main>
-
             </div>
-
         </div>
     );
 }

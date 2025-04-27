@@ -8,15 +8,15 @@ import * as yup from "yup";
 import toast from "react-hot-toast";
 import { validateResetTokenService, resetPasswordService } from "../../../../services/authService";
 
-// Validación Yup
 const schema = yup.object().shape({
   password: yup.string().min(6, "Mínimo 6 caracteres").required("Contraseña obligatoria"),
 });
 
 export default function ResetPassword() {
+
   const { token } = useParams();
   const router = useRouter();
-  const [tokenValido, setTokenValido] = useState<boolean | null>(null); // null = cargando
+  const [validToken, setValidToken] = useState<boolean | null>(null);
 
   const {
     register,
@@ -24,18 +24,16 @@ export default function ResetPassword() {
     formState: { errors, isSubmitting },
   } = useForm({ resolver: yupResolver(schema) });
 
-  // Validar token al montar el componente
   useEffect(() => {
-    const validarToken = async () => {
+    const validateToken = async () => {
       try {
         await validateResetTokenService(token as string);
-        setTokenValido(true);
-      } catch (error: any) {
-        toast.error(error.message || "Token inválido");
-        setTokenValido(false);
+        setValidToken(true);
+      } catch {
+        setValidToken(false);
       }
     };
-    validarToken();
+    validateToken();
   }, [token]);
 
   const onSubmit = async (data: any) => {
@@ -48,51 +46,66 @@ export default function ResetPassword() {
     }
   };
 
-  // 🔄 Loading
-  if (tokenValido === null) {
-    return <p className="text-center mt-20">Verificando token...</p>;
+  if (validToken === null) {
+    return (
+      <div className="min-h-screen flex items-center justify-center"
+        style={{ background: "linear-gradient(to bottom, #f472b6, #f9a8d4, #ffdab4)" }}>
+        <div className="flex items-center justify-center h-screen">
+          <p className="text-[#142d71] text-lg">Verificando token...</p>
+        </div>
+      </div>
+    );
   }
 
-  // ❌ Token inválido
-  if (tokenValido === false) {
+  if (validToken === false) {
     return (
-      <main className="flex h-screen items-center justify-center">
-        <div className="bg-white p-6 rounded-lg shadow-md w-96 text-center">
-          <h2 className="text-xl font-bold mb-4 text-red-600">Token inválido o expirado</h2>
-          <p className="mb-4">Solicita una nueva recuperación de contraseña.</p>
+      <div className="min-h-screen flex items-center justify-center"
+        style={{ background: "linear-gradient(to bottom, #f472b6, #f9a8d4, #ffdab4)" }}>
+        <div className="bg-white p-8 rounded-3xl shadow-lg w-full max-w-sm text-center">
+          <h2 className="text-2xl font-bold mb-4 text-red-600">Token inválido o expirado</h2>
+          <p className="mb-6 text-gray-600">Solicita una nueva recuperación de contraseña.</p>
           <button
             onClick={() => router.push("/recovery-password")}
-            className="bg-blue-500 text-white p-2 rounded w-full"
+            className="w-full py-2 rounded-md text-white transition hover:brightness-110"
+            style={{ background: "linear-gradient(to bottom, #142d71, #314e9e)" }}
           >
             Ir a Recuperar Contraseña
           </button>
         </div>
-      </main>
+      </div>
     );
   }
 
-  // ✅ Token válido, mostrar formulario
   return (
-    <main className="flex h-screen items-center justify-center">
-      <form onSubmit={handleSubmit(onSubmit)} className="bg-white p-6 rounded-lg shadow-md w-96">
-        <h2 className="text-xl font-bold mb-4">Nueva Contraseña</h2>
-
-        <input
-          type="password"
-          placeholder="Ingresa tu nueva contraseña"
-          {...register("password")}
-          className="w-full p-2 mb-1 border"
-        />
-        {errors.password && <p className="text-red-500 text-sm mb-4">{errors.password.message}</p>}
-
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className={`w-full bg-indigo-600 text-white p-2 rounded ${isSubmitting ? "opacity-50" : ""}`}
-        >
-          {isSubmitting ? "Guardando..." : "Cambiar Contraseña"}
-        </button>
-      </form>
-    </main>
+    <div className="min-h-screen flex items-center justify-center"
+      style={{ background: "linear-gradient(to bottom, #f472b6, #f9a8d4, #ffdab4)" }}>
+      <div className="bg-white p-8 rounded-3xl shadow-lg w-full max-w-sm">
+        <h2 className="text-3xl font-bold mb-4 text-[#142d71] text-center">Nueva Contraseña</h2>
+        <p className="text-gray-600 text-sm mb-6 text-center">
+          Ingresa tu nueva contraseña para completar el proceso de recuperación.
+        </p>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <div>
+            <label className="block text-sm text-gray-700 mb-1">Contraseña</label>
+            <input
+              type="password"
+              placeholder="••••••••"
+              {...register("password")}
+              className="w-full border-b border-gray-300 focus:border-pink-500 outline-none py-2 bg-transparent"
+            />
+            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
+          </div>
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className={`w-full py-2 rounded-md text-white transition 
+                       ${isSubmitting ? "opacity-50 cursor-not-allowed" : "hover:brightness-110"}`}
+            style={{ background: "linear-gradient(to bottom, #142d71, #314e9e)" }}
+          >
+            {isSubmitting ? "Guardando..." : "Cambiar Contraseña"}
+          </button>
+        </form>
+      </div>
+    </div>
   );
 }

@@ -1,7 +1,8 @@
-/* eslint-disable @next/next/no-img-element */
+
 'use client';
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function HomePage() {
 
@@ -14,15 +15,19 @@ export default function HomePage() {
         <header className="flex items-center justify-between px-8 py-6 relative mt-2">
           {/* Logo centrado */}
           <div className="absolute left-1/2 transform -translate-x-1/2 text-2xl font-bold text-[#142d71]">
-            <img src="https://i.imgur.com/llHWoWb.png" className="w-[120px] bg-no-repeat" alt="" />
+            <Image
+              src="https://i.imgur.com/llHWoWb.png"
+              alt="Logo RegaloXTi"
+              width={120}
+              height={40}
+              className="bg-no-repeat"
+            />
           </div>
-
           {/* Menú Desktop */}
           <nav className="hidden md:flex space-x-6 text-[#142d71] font-medium ml-auto">
             <Link href="/login" className="hover:underline">Iniciar Sesión</Link>
             <Link href="/register" className="hover:underline">Registrarme</Link>
           </nav>
-
           {/* Botón Hamburguesa */}
           <button
             className="md:hidden text-3xl text-[#142d71] ml-auto"
@@ -30,7 +35,6 @@ export default function HomePage() {
           >
             ☰
           </button>
-
           {/* Menú Mobile */}
           {menuOpen && (
             <div className="absolute top-full right-8 bg-white shadow-lg rounded mt-2 py-4 px-6 flex flex-col space-y-4 text-[#142d71] z-50">
@@ -51,13 +55,19 @@ export default function HomePage() {
               Sin preocupaciones, sin estrés.
             </p>
             <div className="flex items-center justify-center">
-              <button className="bg-[#142d71] text-white px-6 py-3 rounded hover:brightness-110 transition">
-                ¡Programa Ahora!
+              <button className="bg-[#142d71] text-white px-6 py-3 rounded hover:brightness-110 transition cursor-pointer">
+                Vamos!
               </button>
             </div>
           </div>
           <div className="md:w-1/2 mb-8 md:mb-0 flex justify-center">
-            <img src="https://i.imgur.com/LO42zS3.png" alt="Gift Box" className="max-w-xs md:max-w-md" />
+            <Image
+              src="https://i.imgur.com/LO42zS3.png"
+              alt="Regalos RegaloXTi"
+              width={500}
+              height={300}
+              className="max-w-xs md:max-w-md animate-[float_3s_ease-in-out_infinite]"
+            />
           </div>
         </section>
       </div>
