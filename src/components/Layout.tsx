@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { FiHome, FiGift, FiUser, FiLogOut, FiBell, FiMenu, FiX } from "react-icons/fi";
 import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
+import Image from "next/image";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
 
@@ -31,7 +32,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <div className="flex flex-col py-6 px-4 space-y-6">
                     <div className="flex justify-between items-center">
                         <div className="text-2xl text-[#6366f1]">
-                            <img src="https://i.imgur.com/llHWoWb.png" alt="" />
+                            <Image src="https://i.imgur.com/llHWoWb.png" alt="Logo RegaloXTi" width={140} height={140} className="bg-no-repeat" />
                         </div>
                         <button className="md:hidden" onClick={() => setSidebarOpen(false)}>
                             <FiX />
