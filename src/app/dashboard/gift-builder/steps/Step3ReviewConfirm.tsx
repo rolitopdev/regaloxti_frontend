@@ -1,4 +1,6 @@
-export default function Step3ReviewConfirm({ giftData, prevStep }) {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+export default function Step3ReviewConfirm({ giftData, prevStep }: any) {
 
     const handleConfirm = () => {
         // Aquí iría la lógica para enviar la orden al backend (fetch/axios)
@@ -14,7 +16,7 @@ export default function Step3ReviewConfirm({ giftData, prevStep }) {
                 <h3 className="font-bold">Productos Seleccionados:</h3>
                 {giftData.products.length > 0 ? (
                     <ul className="list-disc ml-5">
-                        {giftData.products.map((p, idx) => (
+                        {giftData.products.map((p: any, idx: any) => (
                             <li key={idx}>{p.name} x {p.quantity}</li>
                         ))}
                     </ul>

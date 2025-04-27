@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { useState } from 'react';
 
-export default function Step2PersonalMessage({ giftData, setGiftData, nextStep, prevStep }) {
+export default function Step2PersonalMessage({ giftData, setGiftData, nextStep, prevStep }: any) {
     const [message, setMessage] = useState(giftData.message || '');
 
     const handleNext = () => {
