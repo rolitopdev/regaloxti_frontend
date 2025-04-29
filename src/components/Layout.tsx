@@ -20,8 +20,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     if (!isMounted) return null;
 
     const menuItems: any = [];
-
-    if (user.Role.name === 'admin') {
+    console.log('user', user)
+    if (user?.Role?.name === 'admin') {
         menuItems.push({ href: "/admin", icon: <FiHome />, key: "Administración" });
     } else {
         menuItems.push({ href: "/dashboard", icon: <FiHome />, key: "Inicio" });
