@@ -36,3 +36,37 @@ export const getOrdersByUserId = async (user_id: number) => {
     }
 };
 
+export const getAllOrders = async () => {
+
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders`, {
+            method: 'GET',
+            headers: { "Content-Type": "application/json", "Authorization": `Bearer ${JSON.parse(localStorage.getItem('user')!).token}` },
+        });
+
+        const data = await res.json();
+        return data;
+
+    } catch (error: any) {
+        console.error(error);
+        return { success: false, message: error.message || 'Error desconocido.' };
+
+    }
+
+}
+
+export const deleteOrder = async (order_id: number) => {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders/${order_id}`, {
+            method: 'DELETE',
+            headers: { "Content-Type": "application/json", "Authorization": `Bearer ${JSON.parse(localStorage.getItem('user')!).token}` },
+        });
+
+        const data = await res.json();
+        return data;
+
+    } catch (error: any) {
+        console.error(error);
+        return { success: false, message: error.message || 'Error desconocido.' };
+    }
+}

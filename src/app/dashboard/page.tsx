@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getOrdersByUserId } from "@/services/orderService";
 import { useSession } from "@/context/AuthContext";
 import Image from "next/image";
@@ -13,23 +13,27 @@ dayjs.extend(localizedFormat);
 dayjs.locale("es");
 
 export default function DashboardPage() {
+
     const { user } = useSession();
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
+    const hasFetched = useRef(false);
 
+    const fetchOrders = async () => {
+        try {
+            const res = await getOrdersByUserId(user.user_id);
+            if (res.success) setOrders(Array.isArray(res.data) ? res.data : []);
+        } catch (err) {
+            console.error("Error al cargar pedidos:", err);
+        } finally {
+            setLoading(false);
+        }
+    };
     useEffect(() => {
-        const fetchOrders = async () => {
-            try {
-                const res = await getOrdersByUserId(user.user_id);
-                if (res.success) setOrders(Array.isArray(res.data) ? res.data : []);
-            } catch (err) {
-                console.error("Error al cargar pedidos:", err);
-            } finally {
-                setLoading(false);
-            }
-        };
-        if (user?.user_id) fetchOrders();
-    }, [user?.user_id]);
+        if (hasFetched.current) return;
+        hasFetched.current = true;
+        fetchOrders();
+    });
 
     return (
         <div className="max-w-6xl mx-auto p-6">

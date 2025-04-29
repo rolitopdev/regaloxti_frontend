@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -9,7 +10,7 @@ import Image from "next/image";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
 
-    const { logout } = useAuth();
+    const { logout, user } = useAuth();
     const pathname = usePathname();
 
     const [isMounted, setIsMounted] = useState(false);
@@ -18,11 +19,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     useEffect(() => setIsMounted(true), []);
     if (!isMounted) return null;
 
-    const menuItems = [
-        { href: "/dashboard", icon: <FiHome />, key: "Inicio" },
-        { href: "/dashboard/gift-builder", icon: <FiGift />, key: "Armar Regalo" },
-        // { href: "/dashboard/profile", icon: <FiUser />, key: "Perfil" }
-    ];
+    const menuItems: any = [];
+
+    if (user.Role.name === 'admin') {
+        menuItems.push({ href: "/admin", icon: <FiHome />, key: "Administración" });
+    } else {
+        menuItems.push({ href: "/dashboard", icon: <FiHome />, key: "Inicio" });
+        menuItems.push({ href: "/dashboard/gift-builder", icon: <FiGift />, key: "Armar Regalo" });
+        // { href: "/dashboard/profile", icon: <FiUser />, key: "Perfil" 
+    }
 
     return (
         <div className="flex h-screen bg-[#f9fafb] text-gray-700">
@@ -39,7 +44,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                         </button>
                     </div>
                     <nav className="flex flex-col space-y-4">
-                        {menuItems.map((item) => (
+                        {menuItems.map((item: any) => (
                             <Link
                                 key={item.key}
                                 href={item.href}

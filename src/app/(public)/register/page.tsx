@@ -12,6 +12,8 @@ import { toast } from 'react-toastify';
 const schema = yup.object().shape({
   name: yup.string().required("Nombre es obligatorio"),
   last_name: yup.string().required("Apellido es obligatorio"),
+  identification: yup.string().required("Identificación es obligatoria"),
+  phone_number: yup.string().required("Teléfono es obligatorio"),
   email: yup.string().email("Correo inválido").required("El correo es obligatorio"),
   password: yup.string().min(6, "Mínimo 6 caracteres").required("La contraseña es obligatoria"),
 });
@@ -67,6 +69,26 @@ export default function Register() {
                 className="w-full border-b border-gray-300 focus:border-pink-500 outline-none py-2 bg-transparent"
               />
               {errors.last_name && <p className="text-red-500 text-sm mt-1">{errors.last_name.message}</p>}
+            </div>
+            <div>
+              <label className="block text-sm text-[#142d71] mb-1">Identificación</label>
+              <input
+                {...register("identification")}
+                placeholder="Tu identificación"
+                className="w-full border-b border-gray-300 focus:border-pink-500 outline-none py-2 bg-transparent"
+              />
+              {errors.identification && <p className="text-red-500 text-sm mt-1">{errors.identification.message}</p>}
+            </div>
+            { /* phone nunmber*/}
+            <div>
+              <label className="block text-sm text-[#142d71] mb-1">Teléfono</label>
+              <input
+                {...register("phone_number")}
+                placeholder="Tu teléfono"
+                id="phone_number"
+                className="w-full border-b border-gray-300 focus:border-pink-500 outline-none py-2 bg-transparent"
+              />
+              {errors.phone_number && <p className="text-red-500 text-sm mt-1">{errors.phone_number.message}</p>}
             </div>
             <div>
               <label className="block text-sm text-[#142d71] mb-1">Correo</label>
