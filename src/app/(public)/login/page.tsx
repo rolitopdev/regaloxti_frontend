@@ -31,7 +31,7 @@ export default function Login() {
             console.log(userData)
             login(userData, userData.token);
             toast.success(res.message, { position: "top-center" });
-            if (userData.Role.name === "admin") {
+            if (userData?.Role?.name === "admin") {
                 router.push("/admin");
             } else {
                 router.push("/dashboard");
