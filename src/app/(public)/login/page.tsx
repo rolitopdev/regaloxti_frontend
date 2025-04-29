@@ -28,7 +28,6 @@ export default function Login() {
         try {
             const res = await loginService(data.email, data.password);
             const userData = res.data;
-            console.log(userData)
             login(userData, userData.token);
             toast.success(res.message, { position: "top-center" });
             if (userData?.Role?.name === "admin") {

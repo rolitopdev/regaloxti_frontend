@@ -28,8 +28,7 @@ export default function AdminOrdersPage() {
                 setOrders(res.data);
                 setFilteredOrders(res.data);
             }
-        } catch (err) {
-            console.log('err', err);
+        } catch {
             toast.error("Error al cargar pedidos", { position: "top-center" });
         } finally {
             setLoading(false);
