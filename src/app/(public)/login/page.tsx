@@ -6,7 +6,7 @@ import * as yup from "yup";
 import { useRouter } from "next/navigation";
 import { loginService } from "../../../services/authService";
 import { useAuth } from "../../../hooks/useAuth";
-import toast from "react-hot-toast";
+import { toast } from 'react-toastify';
 import Link from "next/link";
 
 const schema = yup.object().shape({
@@ -29,10 +29,10 @@ export default function Login() {
             const res = await loginService(data.email, data.password);
             const userData = res.data;
             login(userData, userData.token);
-            toast.success(res.message || "Login exitoso");
+            toast.success(res.message, { position: "top-center" });
             router.push("/dashboard");
         } catch (err: any) {
-            toast.error(err.message || "Error al iniciar sesión");
+            toast.error(err.message, { position: "top-center" });
         }
     };
 

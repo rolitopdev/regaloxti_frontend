@@ -6,7 +6,7 @@ import * as yup from "yup";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../../hooks/useAuth";
 import { registerService } from "../../../services/authService";
-import toast from "react-hot-toast";
+import { toast } from 'react-toastify';
 
 // 🎯 Esquema Yup para el registro
 const schema = yup.object().shape({
@@ -31,10 +31,10 @@ export default function Register() {
       const res = await registerService(form);
       const userData = res.data;
       login(userData, userData.token);
-      toast.success(res.message || "Registro exitoso");
+      toast.success(res.message || "Registro exitoso", { position: "top-center" });
       router.push("/dashboard");
     } catch (err: any) {
-      toast.error(err.message || "Error al registrarse");
+      toast.error(err.message || "Error al registrarse", { position: "top-center" });
     }
   };
 

@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import toast from "react-hot-toast";
+import { toast } from 'react-toastify';
 import { requestPasswordService } from "../../../services/authService";
 import { useRouter } from "next/navigation";
 
@@ -25,10 +25,10 @@ export default function RecoveryPassword() {
             const res = await requestPasswordService(data.email);
             if (res.success) {
                 router.push("/login");
-                toast.success(res.message || "Correo de recuperación enviado");
+                toast.success(res.message, { position: "top-center" });
             }
         } catch (error: any) {
-            toast.error(error.message || "Algo salió mal");
+            toast.error(error.message || "Algo salió mal", { position: "top-center" });
         }
     };
 

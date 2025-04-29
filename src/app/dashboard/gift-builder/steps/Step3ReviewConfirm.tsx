@@ -2,9 +2,16 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createOrder } from "@/services/orderService";
-import toast from "react-hot-toast";
+import { toast } from 'react-toastify';
 import { useSession } from "@/context/AuthContext";
 import { formatCOP } from "@/utils/formatCurrency";
+
+import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+import "dayjs/locale/es";
+
+dayjs.extend(localizedFormat);
+dayjs.locale("es");
 
 export default function Step3ReviewConfirm({ giftData, prevStep }: any) {
 
@@ -17,26 +24,26 @@ export default function Step3ReviewConfirm({ giftData, prevStep }: any) {
 
     const handleConfirm = async () => {
         if (!giftData.products || giftData.products.length === 0) {
-            toast.error('Debes seleccionar al menos un producto.');
+            toast.info('Debes seleccionar al menos un producto.', { position: "top-center" });
             return;
         }
 
         if (!giftData.recipient || !giftData.recipient.name || !giftData.recipient.phone || !giftData.recipient.address || !giftData.recipient.date) {
-            toast.error('Debes completar todos los datos del destinatario.');
+            toast.info('Debes completar todos los datos del destinatario.', { position: "top-center" });
             return;
         }
 
         setLoading(true);
 
-        const result = await createOrder(giftData, user.user_id);
+        const result = await createOrder(giftData, user.user.user_id);
 
         setLoading(false);
 
         if (result.success) {
-            toast.success('🎉 ¡Pedido enviado exitosamente!');
+            toast.success('🎉 ¡Pedido enviado exitosamente!', { position: "top-center" });
             router.push("/dashboard");
         } else {
-            toast.error(`Error: ${result.message}`);
+            toast.error(`Error: ${result.message}`, { position: "top-center" });
         }
     };
     return (
@@ -53,7 +60,7 @@ export default function Step3ReviewConfirm({ giftData, prevStep }: any) {
                 <h3 className="font-bold mb-2">📍 Destinatario:</h3>
                 <p><strong>Nombre:</strong> {giftData.recipient.name}</p>
                 <p><strong>Teléfono:</strong> {giftData.recipient.phone}</p>
-                <p><strong>Fecha de Envío:</strong> {giftData.recipient.date}</p>
+                <p><strong>Fecha de Envío:</strong> {dayjs(giftData.recipient.date).format("D [de] MMMM YYYY h:mm A")}</p>
                 <p><strong>Dirección:</strong> {giftData.recipient.address}</p>
             </div>
 

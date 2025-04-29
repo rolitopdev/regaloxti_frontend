@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { DndContext, closestCenter, DragOverlay } from "@dnd-kit/core";
 import { motion } from "framer-motion";
-import toast from "react-hot-toast";
+import { toast } from 'react-toastify';
 import { getAvailableProducts } from "@/services/productService";
 import { suggestGiftService } from "@/services/aiService";
 import GiftBox from "./components/GiftBox";
@@ -19,8 +19,8 @@ export default function Step1GiftBuilder({ giftData, setGiftData, nextStep }: an
 
     useEffect(() => {
         getAvailableProducts()
-            .then((res) => res.success ? setProducts(res.data) : toast.error(res.message || "Error al cargar productos"))
-            .catch((err) => toast.error(err.message || "Error al cargar productos"));
+            .then((res) => res.success ? setProducts(res.data) : toast.error(res.message || "Error al cargar productos", { position: "top-center" }))
+            .catch((err) => toast.error(err.message || "Error al cargar productos", { position: "top-center" }));
     }, []);
 
     const handleAddProduct = (productId: string) => {
@@ -30,7 +30,7 @@ export default function Step1GiftBuilder({ giftData, setGiftData, nextStep }: an
         const exists = giftData.products.find((item: any) => item.product_id === product.product_id);
         if (exists) {
             if (exists.quantity >= 10) {
-                toast.error("Máximo 10 unidades por producto");
+                toast.error("Máximo 10 unidades por producto", { position: "top-center" });
                 return;
             }
             setGiftData({
@@ -47,7 +47,7 @@ export default function Step1GiftBuilder({ giftData, setGiftData, nextStep }: an
                 products: [...giftData.products, { ...product, quantity: 1 }]
             });
         }
-        toast.success(`${product.name} añadido a la caja`);
+        toast.success(`${product.name} añadida a la caja`);
     };
 
     const onDragStart = (event: any) => {
@@ -100,10 +100,10 @@ export default function Step1GiftBuilder({ giftData, setGiftData, nextStep }: an
             setLoading(true);
             const suggestions = await suggestGiftService(prompt);
             const enriched = suggestions.data.map((s: any) => ({ ...s, quantity: s.quantity || 1 }));
-            toast.success(`RegalinaIA: ${suggestions.message}`, { duration: 10000, icon: "🤖" });
+            toast.success(`RegalinaIA: ${suggestions.message}`, { position: "top-center", autoClose: 7000 });
             setGiftData({ ...giftData, products: enriched });
         } catch (err: any) {
-            toast.error(err);
+            toast.error(err, { position: "top-center" });
         } finally {
             setLoading(false);
         }

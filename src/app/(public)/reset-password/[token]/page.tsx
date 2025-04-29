@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import toast from "react-hot-toast";
+import { toast } from 'react-toastify';
 import { validateResetTokenService, resetPasswordService } from "../../../../services/authService";
 
 const schema = yup.object().shape({
@@ -39,10 +39,10 @@ export default function ResetPassword() {
   const onSubmit = async (data: any) => {
     try {
       const response = await resetPasswordService(token as string, data.password);
-      toast.success(response.message || "Contraseña actualizada");
+      toast.success(response.message || "Contraseña actualizada", { position: "top-center" });
       router.push("/login");
     } catch (err: any) {
-      toast.error(err.message || "Error al cambiar contraseña");
+      toast.error(err.message || "Error al cambiar contraseña", { position: "top-center" });
     }
   };
 
