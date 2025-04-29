@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 export const getAvailableProducts = async () => {
     try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`, {
@@ -8,7 +10,8 @@ export const getAvailableProducts = async () => {
         const data = await res.json();
         return data;
 
-    } catch (error) {
-        throw error;
+    } catch (error: any) {
+        console.error(error);
+        return { success: false, message: error.message || 'Error desconocido.' };
     }
 };

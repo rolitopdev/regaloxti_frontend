@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+import { formatCOP } from "@/utils/formatCurrency";
 import { useDroppable } from "@dnd-kit/core";
 import { motion } from "framer-motion";
 
@@ -28,13 +29,13 @@ export default function GiftBox({ productsInBox, onIncrease, onDecrease, onRemov
                         {productsInBox.map((item: any) => (
                             <div key={item.product_id} className="bg-white border rounded p-2 m-1 w-28 text-center shadow">
                                 <p className="text-xs font-semibold truncate">{item.name}</p>
-                                <p className="text-green-600 text-sm">${item.price}</p>
+                                <p className="text-green-600 text-sm">{formatCOP(item.price)}</p>
                                 <div className="flex justify-center items-center space-x-1 mt-1">
-                                    <button onClick={() => onDecrease(item.product_id)} className="px-2 bg-gray-300 rounded text-xs">-</button>
+                                    <button onClick={() => onDecrease(item.product_id)} className="px-2 bg-gray-300 rounded text-xs cursor-pointer">-</button>
                                     <span>{item.quantity}</span>
-                                    <button onClick={() => onIncrease(item.product_id)} className="px-2 bg-gray-300 rounded text-xs">+</button>
+                                    <button onClick={() => onIncrease(item.product_id)} className="px-2 bg-gray-300 rounded text-xs cursor-pointer">+</button>
                                 </div>
-                                <button onClick={() => onRemove(item.product_id)} className="mt-1 bg-red-500 text-white px-2 py-1 rounded text-xs">🗑️</button>
+                                <button onClick={() => onRemove(item.product_id)} className="mt-1 bg-red-500 text-white px-2 py-1 rounded text-xs cursor-pointer">🗑️</button>
                             </div>
                         ))}
                     </motion.div>
@@ -43,7 +44,7 @@ export default function GiftBox({ productsInBox, onIncrease, onDecrease, onRemov
 
             <p className="mt-4 font-bold">{totalProducts} producto(s)</p>
             <p className="text-xl font-bold text-green-700 mt-2">
-                Total: ${totalPrice.toFixed(2)}
+                Total: {formatCOP(totalPrice)}
             </p>
         </div>
     );

@@ -9,6 +9,7 @@ import { suggestGiftService } from "@/services/aiService";
 import GiftBox from "./components/GiftBox";
 import ProductList from "./components/ProductList";
 import FloatingIAButton from "./components/FloatingIAButton";
+import { formatCOP } from "@/utils/formatCurrency";
 
 export default function Step1GiftBuilder({ giftData, setGiftData, nextStep }: any) {
 
@@ -130,7 +131,7 @@ export default function Step1GiftBuilder({ giftData, setGiftData, nextStep }: an
                         animate={{ scale: 1, rotate: 0 }}
                     >
                         <p className="font-bold text-sm">{activeProduct.name}</p>
-                        <p className="text-green-600 text-xs">${activeProduct.price}</p>
+                        <p className="text-green-600 text-xs">{formatCOP(activeProduct.price)}</p>
                     </motion.div>
                 )}
             </DragOverlay>

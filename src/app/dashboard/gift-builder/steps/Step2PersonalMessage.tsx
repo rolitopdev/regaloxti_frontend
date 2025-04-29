@@ -8,9 +8,10 @@ import LocationPickerMap from '@/components/LocationPickerMap';
 dayjs.extend(isSameOrAfter);
 
 export default function Step2PersonalMessage({ giftData, setGiftData, nextStep, prevStep }: any) {
+
     const [formData, setFormData] = useState({
         date: giftData.recipient?.date || '',
-        recipientName: giftData.recipient?.recipientName || '',
+        name: giftData.recipient?.name || '',
         phone: giftData.recipient?.phone || '',
         address: giftData.recipient?.address || '',
         latlng: giftData.recipient?.latlng || null,
@@ -21,11 +22,11 @@ export default function Step2PersonalMessage({ giftData, setGiftData, nextStep, 
 
     const validationSchema = yup.object().shape({
         date: yup.string()
-            .required('La fecha es obligatoria')
-            .test('is-future', 'La fecha debe ser hoy o en el futuro', value => {
-                return dayjs(value).isSameOrAfter(dayjs(), 'day');
+            .required('La fecha y hora son obligatorias')
+            .test('is-future', 'La fecha y hora deben ser futuras', value => {
+                return value ? dayjs(value).isSameOrAfter(dayjs()) : false;
             }),
-        recipientName: yup.string().required('El nombre es obligatorio'),
+        name: yup.string().required('El nombre es obligatorio'),
         phone: yup.string()
             .required('El teléfono es obligatorio')
             .matches(/^\+?\d{7,15}$/, 'Teléfono inválido, incluye código de país si es necesario'),
@@ -54,7 +55,7 @@ export default function Step2PersonalMessage({ giftData, setGiftData, nextStep, 
                 message: formData.message,
                 recipient: {
                     date: formData.date,
-                    recipientName: formData.recipientName,
+                    name: formData.name,
                     phone: formData.phone,
                     address: formData.address,
                     latlng: formData.latlng
@@ -71,18 +72,18 @@ export default function Step2PersonalMessage({ giftData, setGiftData, nextStep, 
     };
 
     return (
-        <div className="max-w-xl mx-auto p-6 bg-white rounded shadow">
+        <div className="max-w-xl mx-auto p-6">
             <h2 className="text-2xl font-semibold mb-6 text-center">📦 Datos de Envío & Mensaje</h2>
 
             <div className="flex flex-col gap-4">
-                {/* Fecha */}
+                {/* Fecha y Hora */}
                 <div>
-                    <label className="block mb-1 font-medium">📅 Fecha de Envío</label>
+                    <label className="block mb-1 font-medium">📅 Fecha y Hora de Envío</label>
                     <input
-                        type="date"
+                        type="datetime-local"
                         name="date"
                         value={formData.date}
-                        min={dayjs().format('YYYY-MM-DD')}
+                        min={dayjs().format('YYYY-MM-DDTHH:mm')}
                         onChange={handleChange}
                         className={`w-full border rounded p-2 ${errors.date ? 'border-red-500' : ''}`}
                     />
@@ -94,12 +95,12 @@ export default function Step2PersonalMessage({ giftData, setGiftData, nextStep, 
                     <label className="block mb-1 font-medium">👤 Nombre del Destinatario</label>
                     <input
                         type="text"
-                        name="recipientName"
-                        value={formData.recipientName}
+                        name="name"
+                        value={formData.name}
                         onChange={handleChange}
-                        className={`w-full border rounded p-2 ${errors.recipientName ? 'border-red-500' : ''}`}
+                        className={`w-full border rounded p-2 ${errors.name ? 'border-red-500' : ''}`}
                     />
-                    {errors.recipientName && <p className="text-red-500 text-sm mt-1">{errors.recipientName}</p>}
+                    {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
                 </div>
 
                 {/* Teléfono */}

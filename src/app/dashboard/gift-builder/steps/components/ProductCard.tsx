@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { formatCOP } from "@/utils/formatCurrency";
 import { useDraggable } from "@dnd-kit/core";
 import Image from "next/image";
 
@@ -14,7 +15,7 @@ export default function ProductCard({ product }: any) {
         >
             <Image src={product.image_url} alt={product.name} height={86} width={96} className="rounded object-cover" />
             <h4 className="text-sm font-semibold truncate">{product.name}</h4>
-            <p className="text-xs text-gray-500">${product.price}</p>
+            <p className="text-xs text-gray-500">{formatCOP(product.price)}</p>
         </div>
     );
 }

@@ -13,7 +13,7 @@ export default function GiftBuilderPage() {
         message: '',
         recipient: {
             date: '',
-            recipientName: '',
+            name: '',
             phone: '',
             address: '',
             latlng: null
@@ -24,7 +24,7 @@ export default function GiftBuilderPage() {
     const prevStep = () => setActiveStep(prev => prev - 1);
 
     return (
-        <div className="p-5 m-1 mx-auto bg-white shadow rounded">
+        <div className="max-w-6xl mx-auto p-6 bg-white">
             {/* Stepper Visual */}
             <div className="flex justify-between mb-10">
                 {['Armar Regalo', 'Mensaje', 'Confirmación'].map((label, index) => (

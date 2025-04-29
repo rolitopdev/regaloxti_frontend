@@ -158,7 +158,7 @@ export default function LocationPickerMap({ initialPosition, onLocationChange }:
     }
 
     return (
-        <div className="mt-4 relative">
+        <div className="relative">
             {/* Buscador con Autocompletado */}
             <div className="flex flex-col mb-2 relative z-100000">
                 <input
